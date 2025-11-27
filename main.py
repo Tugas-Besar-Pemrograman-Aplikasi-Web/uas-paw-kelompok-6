@@ -1,14 +1,21 @@
 from waitress import serve
 from pyramid.config import Configurator
+import hupper
 
-if __name__ == '__main__':
+def main():
     with Configurator() as config:
-
-        #Route
-        config.add_route('home', '/')
-        config.add_route('chatai', '/chatai')
+        # Route
+        config.add_route('home', '/api')
+        config.add_route('chatai', '/api/chatai')
 
         config.include('views')
         config.scan()
         app = config.make_wsgi_app()
-    serve(app, host='0.0.0.0', port=8080)
+    
+    print("Server running on http://0.0.0.0:6543 (Hot Reload Active)")
+    serve(app, host='0.0.0.0', port=6543)
+
+if __name__ == '__main__':
+    hupper.start_reloader('main.main')
+    
+    main()

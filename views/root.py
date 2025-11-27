@@ -1,6 +1,5 @@
-from pyramid.response import Response
 from pyramid.view import view_config
 
-@view_config(route_name='home', request_method='GET')
+@view_config(route_name='home', request_method='GET', renderer='json')
 def hello_world(request):
-    return Response('Hello World!')
+    return {'message': 'Hello World!', 'status': 200}
