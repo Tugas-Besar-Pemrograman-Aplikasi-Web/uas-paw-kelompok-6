@@ -6,12 +6,17 @@ from sqlalchemy.orm import relationship
 
 from .base import Base
 
+
 class Package(Base):
-    __tablename__ = 'packages'
+    __tablename__ = "packages"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    agent_id = Column(UUID(as_uuid=True), ForeignKey('users.id'), nullable=False, index=True)
-    destination_id = Column(UUID(as_uuid=True), ForeignKey('destinations.id'), nullable=False, index=True)
+    agent_id = Column(
+        UUID(as_uuid=True), ForeignKey("users.id"), nullable=False, index=True
+    )
+    destination_id = Column(
+        UUID(as_uuid=True), ForeignKey("destinations.id"), nullable=False, index=True
+    )
     name = Column(String(200), nullable=False)
     duration = Column(Integer, nullable=False)  # in days
     price = Column(Numeric(10, 2), nullable=False)  # decimal for currency
@@ -21,10 +26,14 @@ class Package(Base):
     images = Column(ARRAY(String), nullable=False)  # PostgreSQL array of image URLs
 
     created_at = Column(DateTime, default=datetime.now(timezone.utc))
-    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
+    updated_at = Column(
+        DateTime,
+        default=datetime.now(timezone.utc),
+        onupdate=datetime.now(timezone.utc),
+    )
 
     # Relationships
-    agent = relationship('User', back_populates='packages')
-    destination = relationship('Destination', back_populates='packages')
-    bookings = relationship('Booking', back_populates='package')
-    reviews = relationship('Review', back_populates='package')
+    agent = relationship("User", back_populates="packages")
+    destination = relationship("Destination", back_populates="packages")
+    bookings = relationship("Booking", back_populates="package")
+    reviews = relationship("Review", back_populates="package")
