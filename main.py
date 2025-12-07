@@ -10,9 +10,10 @@ def main():
         # Route
         config.add_route("home", "/api")
         config.add_route("chatai", "/api/chatai")
+        config.add_route("register", "/api/auth/register")
 
-        config.include("views")
-        config.scan()
+        # config.include("views")
+        config.scan("views")
         app = config.make_wsgi_app()
 
     print("Server running on http://0.0.0.0:6543 (Hot Reload Active)")
