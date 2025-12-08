@@ -83,3 +83,29 @@ alembic upgrade head
 python main.py
 ```
 
+# Dokumentasi API
+> Ini adalah dokumentasi utama dari semua api yang tersedia di backend python pyramid tugas besar Pemrograman Aplikasi Web
+## Auth
+### POST /api/auth/register
+**Register/signup user baru (tourist atau agent)**
+**Request Body:**
+```json
+{
+  "name": "John Doe", //string
+  "email": "john@example.com", //string
+  "password": "password123", //string
+  "role": "tourist" // or "agent" //string
+}
+```
+**Response (201 Created):**
+```json
+{
+  "user": {
+    "id": "uuid-here", //string
+    "name": "John Doe", //string
+    "email": "john@example.com", //string
+    "role": "tourist" //string
+  },
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
