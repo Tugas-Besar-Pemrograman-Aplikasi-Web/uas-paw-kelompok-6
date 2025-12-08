@@ -101,11 +101,51 @@ python main.py
 ```json
 {
   "user": {
-    "id": "uuid-here", //string
-    "name": "John Doe", //string
-    "email": "john@example.com", //string
-    "role": "tourist" //string
+    "id": "uuid-here",
+    "name": "John Doe",
+    "email": "john@example.com",
+    "role": "tourist"
   },
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+---
+### POST /api/auth/login
+**Login user**
+**Request Body:**
+```json
+{
+  "email": "john@example.com", //string
+  "password": "password123", //string
+  "role": "tourist" // validate user has this role //string
+}
+```
+**Response (200 OK):**
+```json
+{
+  "user": {
+    "id": "uuid-here",
+    "name": "John Doe",
+    "email": "john@example.com",
+    "role": "tourist"
+  },
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+---
+
+### GET /api/auth/me
+**Get current authenticated user**
+**Headers:**
+```
+Authorization: Bearer {token}
+```
+**Response (200 OK):**
+```json
+{
+  "id": "uuid-here",
+  "name": "John Doe",
+  "email": "john@example.com",
+  "role": "tourist"
 }
 ```
