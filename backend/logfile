@@ -1,0 +1,44 @@
+2025-12-11 19:08:05.027 WIB [82754] LOG:  starting PostgreSQL 17.7 on aarch64-apple-darwin24.6.0, compiled by clang version 21.1.2, 64-bit
+2025-12-11 19:08:05.028 WIB [82754] LOG:  listening on IPv6 address "::1", port 5432
+2025-12-11 19:08:05.028 WIB [82754] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2025-12-11 19:08:05.029 WIB [82754] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2025-12-11 19:08:05.030 WIB [82757] LOG:  database system was shut down at 2025-12-11 19:07:53 WIB
+2025-12-11 19:08:05.032 WIB [82754] LOG:  database system is ready to accept connections
+2025-12-11 19:09:46.470 WIB [82790] ERROR:  database "uas_pengweb" already exists
+2025-12-11 19:09:46.470 WIB [82790] STATEMENT:  CREATE DATABASE uas_pengweb;
+2025-12-11 19:13:05.032 WIB [82755] LOG:  checkpoint starting: time
+2025-12-11 19:14:40.799 WIB [82755] LOG:  checkpoint complete: wrote 948 buffers (5.8%); 0 WAL file(s) added, 0 removed, 0 recycled; write=95.751 s, sync=0.013 s, total=95.767 s; sync files=308, longest=0.001 s, average=0.001 s; distance=4341 kB, estimate=4341 kB; lsn=0/1954C00, redo lsn=0/1950428
+2025-12-11 19:23:05.803 WIB [82755] LOG:  checkpoint starting: time
+2025-12-11 19:23:14.349 WIB [82755] LOG:  checkpoint complete: wrote 85 buffers (0.5%); 0 WAL file(s) added, 0 removed, 0 recycled; write=8.537 s, sync=0.006 s, total=8.546 s; sync files=81, longest=0.002 s, average=0.001 s; distance=332 kB, estimate=3940 kB; lsn=0/19A3888, redo lsn=0/19A37F8
+2025-12-11 19:32:12.944 WIB [83902] FATAL:  lock file "postmaster.pid" already exists
+2025-12-11 19:32:12.944 WIB [83902] HINT:  Is another postmaster (PID 82754) running in data directory "/Users/dniel/Github/project/kuliah/uas-paw-kelompok-6/backend/.pg_data"?
+2025-12-11 19:53:05.362 WIB [82755] LOG:  checkpoint starting: time
+2025-12-11 19:53:06.688 WIB [82755] LOG:  checkpoint complete: wrote 14 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=1.321 s, sync=0.002 s, total=1.327 s; sync files=9, longest=0.001 s, average=0.001 s; distance=0 kB, estimate=3546 kB; lsn=0/19A3BD8, redo lsn=0/19A3B80
+2025-12-11 19:58:05.690 WIB [82755] LOG:  checkpoint starting: time
+2025-12-11 19:58:06.912 WIB [82755] LOG:  checkpoint complete: wrote 13 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=1.218 s, sync=0.001 s, total=1.223 s; sync files=9, longest=0.001 s, average=0.001 s; distance=0 kB, estimate=3192 kB; lsn=0/19A3F48, redo lsn=0/19A3EF0
+2025-12-11 20:03:05.914 WIB [82755] LOG:  checkpoint starting: time
+2025-12-11 20:03:07.335 WIB [82755] LOG:  checkpoint complete: wrote 15 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=1.416 s, sync=0.002 s, total=1.421 s; sync files=11, longest=0.001 s, average=0.001 s; distance=1 kB, estimate=2873 kB; lsn=0/19A45A0, redo lsn=0/19A4548
+2025-12-12 07:39:23.474 WIB [82755] LOG:  checkpoint starting: time
+2025-12-12 07:39:23.784 WIB [82755] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.306 s, sync=0.001 s, total=0.311 s; sync files=4, longest=0.001 s, average=0.001 s; distance=1 kB, estimate=2586 kB; lsn=0/19A49C0, redo lsn=0/19A4968
+2025-12-12 08:46:49.927 WIB [94917] ERROR:  invalid input syntax for type uuid: "fffc3da6-d9f5-42f6-94f6-1dd8a32d888" at character 209
+2025-12-12 08:46:49.927 WIB [94917] STATEMENT:  SELECT destinations.id, destinations.name, destinations.description, destinations.photo_url, destinations.country, destinations.created_at, destinations.updated_at 
+	FROM destinations 
+	WHERE destinations.id = 'fffc3da6-d9f5-42f6-94f6-1dd8a32d888'::UUID
+2025-12-12 08:47:09.078 WIB [94917] ERROR:  invalid input syntax for type uuid: "1" at character 209
+2025-12-12 08:47:09.078 WIB [94917] STATEMENT:  SELECT destinations.id, destinations.name, destinations.description, destinations.photo_url, destinations.country, destinations.created_at, destinations.updated_at 
+	FROM destinations 
+	WHERE destinations.id = '1'::UUID
+2025-12-12 08:47:12.155 WIB [94917] ERROR:  invalid input syntax for type uuid: "0" at character 209
+2025-12-12 08:47:12.155 WIB [94917] STATEMENT:  SELECT destinations.id, destinations.name, destinations.description, destinations.photo_url, destinations.country, destinations.created_at, destinations.updated_at 
+	FROM destinations 
+	WHERE destinations.id = '0'::UUID
+2025-12-12 08:47:12.878 WIB [94917] ERROR:  invalid input syntax for type uuid: "0" at character 209
+2025-12-12 08:47:12.878 WIB [94917] STATEMENT:  SELECT destinations.id, destinations.name, destinations.description, destinations.photo_url, destinations.country, destinations.created_at, destinations.updated_at 
+	FROM destinations 
+	WHERE destinations.id = '0'::UUID
+2025-12-12 08:48:09.429 WIB [94917] ERROR:  invalid input syntax for type uuid: "fffc3da6-d9f5-42f6-94f6-1dd8a32d888" at character 209
+2025-12-12 08:48:09.429 WIB [94917] STATEMENT:  SELECT destinations.id, destinations.name, destinations.description, destinations.photo_url, destinations.country, destinations.created_at, destinations.updated_at 
+	FROM destinations 
+	WHERE destinations.id = 'fffc3da6-d9f5-42f6-94f6-1dd8a32d888'::UUID
+2025-12-12 09:14:23.839 WIB [82755] LOG:  checkpoint starting: time
+2025-12-12 09:14:24.759 WIB [82755] LOG:  checkpoint complete: wrote 10 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.917 s, sync=0.001 s, total=0.920 s; sync files=8, longest=0.001 s, average=0.001 s; distance=0 kB, estimate=2327 kB; lsn=0/19A4C80, redo lsn=0/19A4C28

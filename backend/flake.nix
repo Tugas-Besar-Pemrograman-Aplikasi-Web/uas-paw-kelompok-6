@@ -23,6 +23,7 @@
           packages = with pkgs; [
             python314
             python313Packages.pip
+            postgresql_17
           ];
           shellHook = ''
             echo "Hello from devShell!"
@@ -32,3 +33,4 @@
       };
     };
 }
+

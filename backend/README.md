@@ -149,3 +149,205 @@ Authorization: Bearer {token}
   "role": "tourist"
 }
 ```
+
+## Destination
+Note : 
+Destination is added from database, so you need to create destination first to database
+Open psql shell 
+example: 
+```
+psql -h localhost -U app_prod_user -d uas_pengweb
+```
+
+Example sql :
+```
+INSERT INTO destinations (id, name, description, photo_url, country, created_at, updated_at)
+VALUES (
+  gen_random_uuid(),
+  'Bali',
+  'Island of Gods',
+  'https://example.com/bali.jpg',
+  'Indonesia',
+  now(),
+  now()
+);
+```
+
+Select ID : (get id destinations)
+```
+SELECT id, name FROM destinations;
+```
+or with testing end points 
+
+### Get /api/destinations
+**Method : GET**
+No need login
+You get all destinations list
+result: 
+```
+[
+  {
+    "id": "fffc3da6-d9f5-42f6-94f6-1dd8a32d8886",
+    "name": "Bali",
+    "description": "Island of Gods",
+    "photoUrl": "https://example.com/bali.jpg",
+    "country": "Indonesia"
+  }
+]
+```
+
+### Get /api/destinations?search={input}
+**Method : GET**
+No need login 
+get all destinations with {input}
+result:
+```
+[
+  {
+    "id": "fffc3da6-d9f5-42f6-94f6-1dd8a32d8886",
+    "name": "Bali",
+    "description": "Island of Gods",
+    "photoUrl": "https://example.com/bali.jpg",
+    "country": "Indonesia"
+  }
+]
+```
+
+### Get with query /api/destinations
+**Method : GET**
+No need login 
+use query key and value (case sensitive) 
+example :
+```
+key : country
+value : Indonesia
+```
+get all destinations with {value} from {key}
+result :
+```
+[
+  {
+    "id": "fffc3da6-d9f5-42f6-94f6-1dd8a32d8886",
+    "name": "Bali",
+    "description": "Island of Gods",
+    "photoUrl": "https://example.com/bali.jpg",
+    "country": "Indonesia"
+  }
+]
+```
+
+
+
+### Get with id /api/destinations/{uuid}
+**Method: GET**
+Get uuid destinations with all steps above 
+test using query 
+```
+id : fffc3da6-d9f5-42f6-94f6-1dd8a32d888
+```
+
+result :
+```
+[
+  {
+    "id": "fffc3da6-d9f5-42f6-94f6-1dd8a32d8886",
+    "name": "Bali",
+    "description": "Island of Gods",
+    "photoUrl": "https://example.com/bali.jpg",
+    "country": "Indonesia"
+  }
+]
+```
+
+
+## Packages 
+
+### Get /api/packages
+No need to login 
+**Method : GET**
+
+**Params :**
+```
+search : bali
+sortBy : price
+order : asc
+```
+
+### Get detail /api/packages/{id_pkg}
+No need to login 
+**Method : GET**
+
+```
+URL : /api/packages/{id}
+```
+
+### Get package by agent /api/packages/agent/{id_agent}
+No need to login 
+**Method : GET**
+
+```
+URL : /api/packages/agent/{id_agent}
+```
+
+
+### Create /api/packages
+**Get current authenticated user**
+**Headers**:
+```
+Authorization: Bearer {token}
+```
+
+**Response (200 OK)**:
+
+**Method : POST**
+**Body (json):**
+```
+{
+    "destinationId": "uuid-destination",
+    "name": "Holiday Packages to Bali",
+    "duration": 3,
+    "price": 1500000,
+    "itinerary": "Day 1: Kuta. Day 2: Ubud. Day 3: Finish.",
+    "maxTravelers": 10,
+    "contactPhone": "08123456789",
+    "images": ["https://example.com/bali.jpg"]
+}
+```
+
+**Response (200 OK)**
+
+### Put /api/packages/{id_package}
+**Get current authenticated user**
+**Headers**:
+```
+Authorization: Bearer {token}
+```
+
+**Response (200 OK)**:
+
+**Method : PUT**
+**Body (json):**
+```
+{
+    "price": 1750000,
+    "name": "Premiums Bali Holiday"
+}
+```
+
+**Response (200 OK)**
+
+
+### DELETE /api/packages/{id_package}
+**Get current authenticated user**
+**Headers**:
+```
+Authorization: Bearer {token}
+```
+
+**Response (200 OK)**:
+
+**Method : DELETE**
+
+**Response (200 OK)**
+
+
