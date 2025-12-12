@@ -161,15 +161,51 @@ psql -h localhost -U app_prod_user -d uas_pengweb
 
 Example sql :
 ```
-INSERT INTO destinations (id, name, description, photo_url, country, created_at, updated_at)
-VALUES (
-  gen_random_uuid(),
-  'Bali',
-  'Island of Gods',
-  'https://example.com/bali.jpg',
-  'Indonesia',
-  now(),
-  now()
+INSERT INTO destinations (id, name, description, photo_url, country, created_at, updated_at) VALUES 
+(
+    'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 
+    'Maldives', 
+    'Crystal clear waters and luxurious overwater villas in the heart of the Indian Ocean. Perfect for honeymooners and diving enthusiasts seeking a tropical paradise.', 
+    'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?q=80&w=2000&auto=format&fit=crop', 
+    'Maldives', 
+    NOW(), 
+    NOW()
+),
+(
+    'b1ffcd88-0d1c-5ef9-cc7e-7cc0ce491b22', 
+    'Bali', 
+    'Tropical paradise with stunning beaches, ancient temples, and vibrant culture. Experience the spiritual atmosphere of Ubud and the beach life of Seminyak.', 
+    'https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=80&w=2000&auto=format&fit=crop', 
+    'Indonesia', 
+    NOW(), 
+    NOW()
+),
+(
+    'c200de77-1e2d-6ff0-dd8f-8dd1df502c33', 
+    'Santorini', 
+    'Iconic white-washed buildings and breathtaking sunsets over the Aegean Sea. A romantic getaway with unique volcanic beaches and world-class wineries.', 
+    'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?q=80&w=2000&auto=format&fit=crop', 
+    'Greece', 
+    NOW(), 
+    NOW()
+),
+(
+    'd311ef66-2f3e-7001-ee90-9ee2ef613d44', 
+    'Swiss Alps', 
+    'Majestic mountains, pristine lakes, and charming alpine villages. Ideal for hiking in summer and skiing in winter, offering breathtaking panoramic views.', 
+    'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?q=80&w=2000&auto=format&fit=crop', 
+    'Switzerland', 
+    NOW(), 
+    NOW()
+),
+(
+    'e422f055-304f-8112-ff01-0ff3f0724e55', 
+    'Kyoto', 
+    'The cultural heart of Japan, famous for its classical Buddhist temples, gardens, imperial palaces, Shinto shrines and traditional wooden houses.', 
+    'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=2000&auto=format&fit=crop', 
+    'Japan', 
+    NOW(), 
+    NOW()
 );
 ```
 
@@ -187,31 +223,43 @@ result:
 ```
 [
   {
-    "id": "fffc3da6-d9f5-42f6-94f6-1dd8a32d8886",
+    "id": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+    "name": "Maldives",
+    "description": "Crystal clear waters and luxurious overwater villas in the heart of the Indian Ocean. Perfect for honeymooners and diving enthusiasts seeking a tropical paradise.",
+    "photoUrl": "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?q=80&w=2000&auto=format&fit=crop",
+    "country": "Maldives"
+  },
+  {
+    "id": "b1ffcd88-0d1c-5ef9-cc7e-7cc0ce491b22",
     "name": "Bali",
-    "description": "Island of Gods",
-    "photoUrl": "https://example.com/bali.jpg",
+    "description": "Tropical paradise with stunning beaches, ancient temples, and vibrant culture. Experience the spiritual atmosphere of Ubud and the beach life of Seminyak.",
+    "photoUrl": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=80&w=2000&auto=format&fit=crop",
     "country": "Indonesia"
+  },
+  {
+    "id": "c200de77-1e2d-6ff0-dd8f-8dd1df502c33",
+    "name": "Santorini",
+    "description": "Iconic white-washed buildings and breathtaking sunsets over the Aegean Sea. A romantic getaway with unique volcanic beaches and world-class wineries.",
+    "photoUrl": "https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?q=80&w=2000&auto=format&fit=crop",
+    "country": "Greece"
+  },
+  {
+    "id": "d311ef66-2f3e-7001-ee90-9ee2ef613d44",
+    "name": "Swiss Alps",
+    "description": "Majestic mountains, pristine lakes, and charming alpine villages. Ideal for hiking in summer and skiing in winter, offering breathtaking panoramic views.",
+    "photoUrl": "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?q=80&w=2000&auto=format&fit=crop",
+    "country": "Switzerland"
+  },
+  {
+    "id": "e422f055-304f-8112-ff01-0ff3f0724e55",
+    "name": "Kyoto",
+    "description": "The cultural heart of Japan, famous for its classical Buddhist temples, gardens, imperial palaces, Shinto shrines and traditional wooden houses.",
+    "photoUrl": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=2000&auto=format&fit=crop",
+    "country": "Japan"
   }
 ]
 ```
 
-### Get /api/destinations?search={input}
-**Method : GET**
-No need login 
-get all destinations with {input}
-result:
-```
-[
-  {
-    "id": "fffc3da6-d9f5-42f6-94f6-1dd8a32d8886",
-    "name": "Bali",
-    "description": "Island of Gods",
-    "photoUrl": "https://example.com/bali.jpg",
-    "country": "Indonesia"
-  }
-]
-```
 
 ### Get with query /api/destinations
 **Method : GET**
@@ -227,10 +275,10 @@ result :
 ```
 [
   {
-    "id": "fffc3da6-d9f5-42f6-94f6-1dd8a32d8886",
+    "id": "b1ffcd88-0d1c-5ef9-cc7e-7cc0ce491b22",
     "name": "Bali",
-    "description": "Island of Gods",
-    "photoUrl": "https://example.com/bali.jpg",
+    "description": "Tropical paradise with stunning beaches, ancient temples, and vibrant culture. Experience the spiritual atmosphere of Ubud and the beach life of Seminyak.",
+    "photoUrl": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=80&w=2000&auto=format&fit=crop",
     "country": "Indonesia"
   }
 ]
@@ -243,17 +291,17 @@ result :
 Get uuid destinations with all steps above 
 test using query 
 ```
-id : fffc3da6-d9f5-42f6-94f6-1dd8a32d888
+id : b1ffcd88-0d1c-5ef9-cc7e-7cc0ce491b22
 ```
 
 result :
 ```
 [
   {
-    "id": "fffc3da6-d9f5-42f6-94f6-1dd8a32d8886",
+    "id": "b1ffcd88-0d1c-5ef9-cc7e-7cc0ce491b22",
     "name": "Bali",
-    "description": "Island of Gods",
-    "photoUrl": "https://example.com/bali.jpg",
+    "description": "Tropical paradise with stunning beaches, ancient temples, and vibrant culture. Experience the spiritual atmosphere of Ubud and the beach life of Seminyak.",
+    "photoUrl": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=80&w=2000&auto=format&fit=crop",
     "country": "Indonesia"
   }
 ]
@@ -300,20 +348,25 @@ Authorization: Bearer {token}
 **Response (200 OK)**:
 
 **Method : POST**
-**Body (json):**
 ```
-{
-    "destinationId": "uuid-destination",
-    "name": "Holiday Packages to Bali",
+curl -X POST http://localhost:6543/api/packages \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MTI1MmI0Yi0wYzYyLTQzMjYtOWU4NC03MTE4MGYxNzFhZmEiLCJlbWFpbCI6ImFnZW5AdGVzdC5jb20iLCJyb2xlIjoiYWdlbnQiLCJleHAiOjE3NjU1MDkwOTQsImlhdCI6MTc2NTUwNzI5NH0.yTgg8GRekpsigy35lsTkmxM5W5Eu2NicnyyByqIoInA" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "destinationId": "b1ffcd88-0d1c-5ef9-cc7e-7cc0ce491b22",
+    "name": "Paket Liburan Bali 3 Hari",
     "duration": 3,
     "price": 1500000,
-    "itinerary": "Day 1: Kuta. Day 2: Ubud. Day 3: Finish.",
+    "itinerary": "Hari 1: Pantai Kuta. Hari 2: Ubud. Hari 3: Pulang.",
     "maxTravelers": 10,
     "contactPhone": "08123456789",
-    "images": ["https://example.com/bali.jpg"]
-}
+    "images": ["https://images.unsplash.com/photo-1537996194471-e657df975ab4"]
+  }'
 ```
-
+result : 
+```
+{"id": "c61da954-5ce0-4605-ba3a-bb84ce070574", "agentId": "61252b4b-0c62-4326-9e84-71180f171afa", "destinationId": "b1ffcd88-0d1c-5ef9-cc7e-7cc0ce491b22", "name": "Paket Liburan Bali 3 Hari", "duration": 3, "price": 1500000.0, "itinerary": "Hari 1: Pantai Kuta. Hari 2: Ubud. Hari 3: Pulang.", "maxTravelers": 10, "contactPhone": "08123456789", "images": ["https://images.unsplash.com/photo-1537996194471-e657df975ab4"], "rating": 0, "reviewsCount": 0, "destinationName": "Bali", "country": "Indonesia"}%
+```
 **Response (200 OK)**
 
 ### Put /api/packages/{id_package}

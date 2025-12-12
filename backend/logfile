@@ -42,3 +42,10 @@
 	WHERE destinations.id = 'fffc3da6-d9f5-42f6-94f6-1dd8a32d888'::UUID
 2025-12-12 09:14:23.839 WIB [82755] LOG:  checkpoint starting: time
 2025-12-12 09:14:24.759 WIB [82755] LOG:  checkpoint complete: wrote 10 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.917 s, sync=0.001 s, total=0.920 s; sync files=8, longest=0.001 s, average=0.001 s; distance=0 kB, estimate=2327 kB; lsn=0/19A4C80, redo lsn=0/19A4C28
+2025-12-12 09:17:08.998 WIB [96192] ERROR:  permission denied to create extension "uuid-ossp"
+2025-12-12 09:17:08.998 WIB [96192] HINT:  Must have CREATE privilege on current database to create this extension.
+2025-12-12 09:17:08.998 WIB [96192] STATEMENT:  CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+2025-12-12 09:19:23.695 WIB [82755] LOG:  checkpoint starting: time
+2025-12-12 09:19:25.429 WIB [82755] LOG:  checkpoint complete: wrote 18 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=1.729 s, sync=0.002 s, total=1.734 s; sync files=18, longest=0.001 s, average=0.001 s; distance=31 kB, estimate=2097 kB; lsn=0/19ACC40, redo lsn=0/19ACBE8
+2025-12-12 09:49:23.452 WIB [82755] LOG:  checkpoint starting: time
+2025-12-12 09:49:24.165 WIB [82755] LOG:  checkpoint complete: wrote 8 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.711 s, sync=0.001 s, total=0.714 s; sync files=8, longest=0.001 s, average=0.001 s; distance=3 kB, estimate=1888 kB; lsn=0/19ADA90, redo lsn=0/19ADA38

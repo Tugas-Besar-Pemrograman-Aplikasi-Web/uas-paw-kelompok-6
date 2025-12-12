@@ -171,9 +171,16 @@ def create_package(request):
         except NoResultFound:
             return Response(json_body={"error":"Destination id not found"}, status=400)
 
+        try:
+            # Convert string UUID to objek UUID Python
+            agent_uuid = uuid.UUID(request.jwt_claims["sub"])
+            dest_uuid = uuid.UUID(req_data.destinationId)
+        except ValueError:
+            return Response(json_body={"error": "Invalid UUID format"}, status=400)
+
         new_package = Package(
-            agent_id=request.jwt_claims("sub"),
-            destination_id=req.data.destinationId,
+            agent_id=agent_uuid,
+            destination_id=dest_uuid,
             name=req_data.name,
             duration=req_data.duration,
             price=req_data.price,
@@ -192,8 +199,9 @@ def create_package(request):
             session.rollback()
             return Response(json_body={"error": str(err.orig)}, status=409)
         except Exception as e:
-            print(e)
-            return Response(json_body={"error": "Internal Server Error"}, status=500)
+            session.rollback() # Selalu rollback jika error
+            print(f"CRITICAL ERROR: {e}") # Print error ke terminal agar bisa didebug
+            return Response(json_body={"error": f"Internal Server Error: {str(e)}"}, status=500)
 
 #put /api/packages/{id} update  
 @view_config(route_name="package_detail", request_method="PUT", renderer="json")
