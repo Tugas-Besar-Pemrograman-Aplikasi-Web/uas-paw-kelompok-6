@@ -44,8 +44,30 @@ def main():
         ## payment
         config.add_route("payment_generate", "/api/payment/generate")
         
-        # Static file serving untuk QRIS storage
+        ## bookings
+        config.add_route("bookings", "/api/bookings")
+        config.add_route("booking_detail", "/api/bookings/{id}")
+        config.add_route("booking_status", "/api/bookings/{id}/status")
+        config.add_route("booking_payment_upload", "/api/bookings/{id}/payment-proof")
+        config.add_route("booking_payment_verify", "/api/bookings/{id}/payment-verify")
+        config.add_route("booking_payment_reject", "/api/bookings/{id}/payment-reject")
+        config.add_route("booking_by_tourist", "/api/bookings/tourist/{touristId}")
+        config.add_route("booking_by_package", "/api/bookings/package/{packageId}")
+        config.add_route("booking_payment_pending", "/api/bookings/payment/pending")
+        
+        ## reviews
+        config.add_route("reviews", "/api/reviews")
+        config.add_route("review_by_package", "/api/reviews/package/{packageId}")
+        config.add_route("review_by_tourist", "/api/reviews/tourist/{touristId}")
+        
+        ## analytics
+        config.add_route("analytics_agent_stats", "/api/analytics/agent/stats")
+        config.add_route("analytics_agent_package_performance", "/api/analytics/agent/package-performance")
+        config.add_route("analytics_tourist_stats", "/api/analytics/tourist/stats")
+        
+        # Static file serving untuk QRIS storage dan payment proofs
         config.add_static_view(name='qris', path='storage/qris', cache_max_age=3600)
+        config.add_static_view(name='payment_proofs', path='storage/payment_proofs', cache_max_age=3600)
 
         config.scan("views")
         app = config.make_wsgi_app()
