@@ -61,12 +61,19 @@ def booking_payment_upload(request):
             request.response.status = 400
             return {"error": "ID is required"}
         
-        # Validate file upload
-        if "file" not in request.POST:
+        # Validate file upload - accept both "proof" and "file" field names
+        payment_file = None
+        if "proof" in request.POST:
+            payment_file = request.POST["proof"]
+        elif "file" in request.POST:
+            payment_file = request.POST["file"]
+        else:
             request.response.status = 400
             return {"error": "Payment proof file is required"}
         
-        payment_file = request.POST["file"]
+        if not hasattr(payment_file, 'file'):
+            request.response.status = 400
+            return {"error": "Invalid file upload"}
         
         # Validate file type
         allowed_types = ("image/jpeg", "image/png", "image/gif")

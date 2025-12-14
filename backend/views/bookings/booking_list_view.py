@@ -53,10 +53,7 @@ def bookings_list(request):
         user_role = request.jwt_claims.get("role")
         
         # Base query
-        query = select(Booking).options(
-            select(Booking).outerjoin(Package),
-            select(Booking).outerjoin(User)
-        )
+        query = select(Booking)
         
         # Apply filters
         filters = []
