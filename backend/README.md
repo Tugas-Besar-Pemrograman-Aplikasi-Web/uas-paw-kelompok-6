@@ -296,6 +296,818 @@ Content-Type: application/json
 
 ---
 
+### GET /api/packages/{id}
+
+**Get package detail**
+**Response (200 OK):**
+
+```json
+{
+  "id": "uuid-here",
+  "agentId": "uuid-here",
+  "destinationId": "uuid-here",
+  "name": "Bali Adventure Package",
+  "duration": 5,
+  "price": 2500.0,
+  "itinerary": "Day 1: Arrival...",
+  "maxTravelers": 8,
+  "contactPhone": "+62 812-3456-7890",
+  "images": ["url1", "url2"],
+  "rating": 4.8,
+  "reviewsCount": 45,
+  "destinationName": "Bali",
+  "country": "Indonesia"
+}
+```
+
+---
+
+### GET /api/packages/search
+
+**Search packages by query**
+**Query Parameters:**
+
+- `q` (required): Search query (package name)
+- `page` (optional, default: 1): Page number
+- `limit` (optional, default: 10): Items per page
+
+**Response (200 OK):**
+
+```json
+[
+  {
+    "id": "uuid-here",
+    "agentId": "uuid-here",
+    "destinationId": "uuid-here",
+    "name": "Bali Adventure Package",
+    "duration": 5,
+    "price": 2500.0,
+    "itinerary": "Day 1: Arrival...",
+    "maxTravelers": 8,
+    "contactPhone": "+62 812-3456-7890",
+    "images": ["url1", "url2"],
+    "rating": 4.8,
+    "reviewsCount": 45,
+    "destinationName": "Bali",
+    "country": "Indonesia"
+  }
+]
+```
+
+---
+
+### GET /api/packages/agent/{agentId}
+
+**Get all packages by specific agent**
+**Headers:**
+
+```
+Authorization: Bearer {token}
+```
+
+**Query Parameters:**
+
+- `page` (optional, default: 1): Page number
+- `limit` (optional, default: 10): Items per page
+
+**Response (200 OK):**
+
+```json
+[
+  {
+    "id": "uuid-here",
+    "agentId": "uuid-here",
+    "destinationId": "uuid-here",
+    "name": "Bali Adventure Package",
+    "duration": 5,
+    "price": 2500.0,
+    "itinerary": "Day 1: Arrival...",
+    "maxTravelers": 8,
+    "contactPhone": "+62 812-3456-7890",
+    "images": ["url1", "url2"],
+    "rating": 4.8,
+    "reviewsCount": 45,
+    "destinationName": "Bali",
+    "country": "Indonesia"
+  }
+]
+```
+
+---
+
+### PUT /api/packages/{id}
+
+**Update package (agent only)**
+**Headers:**
+
+```
+Authorization: Bearer {token}
+Content-Type: application/json
+```
+
+**Request Body:**
+
+```json
+{
+  "name": "Updated Bali Adventure Package",
+  "duration": 7,
+  "price": 3500.0,
+  "itinerary": "Updated itinerary...",
+  "maxTravelers": 10,
+  "contactPhone": "+62 812-9876-5432"
+}
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "id": "uuid-here",
+  "agentId": "uuid-here",
+  "destinationId": "uuid-here",
+  "name": "Updated Bali Adventure Package",
+  "duration": 7,
+  "price": 3500.0,
+  "itinerary": "Updated itinerary...",
+  "maxTravelers": 10,
+  "contactPhone": "+62 812-9876-5432",
+  "images": ["url1", "url2"],
+  "rating": 4.8,
+  "reviewsCount": 45,
+  "destinationName": "Bali",
+  "country": "Indonesia"
+}
+```
+
+---
+
+### DELETE /api/packages/{id}
+
+**Delete package (agent only)**
+**Headers:**
+
+```
+Authorization: Bearer {token}
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "message": "Package deleted successfully"
+}
+```
+
+---
+
+## Destinations
+
+### GET /api/destinations
+
+**Get all destinations**
+**Query Parameters:**
+
+- `page` (optional, default: 1): Page number
+- `limit` (optional, default: 10): Items per page
+
+**Response (200 OK):**
+
+```json
+[
+  {
+    "id": "uuid-here",
+    "name": "Bali",
+    "description": "Island of Gods with stunning beaches",
+    "country": "Indonesia",
+    "photo": "url-to-image",
+    "createdAt": "2024-01-01T00:00:00Z"
+  }
+]
+```
+
+---
+
+### GET /api/destinations/{id}
+
+**Get destination detail**
+**Response (200 OK):**
+
+```json
+{
+  "id": "uuid-here",
+  "name": "Bali",
+  "description": "Island of Gods with stunning beaches",
+  "country": "Indonesia",
+  "photo": "url-to-image",
+  "createdAt": "2024-01-01T00:00:00Z"
+}
+```
+
+---
+
+### POST /api/destinations
+
+**Create new destination (agent only)**
+**Headers:**
+
+```
+Authorization: Bearer {token}
+Content-Type: multipart/form-data
+```
+
+**Request Body:**
+
+```
+- name: "Bali" (string)
+- description: "Island of Gods with stunning beaches" (string)
+- country: "Indonesia" (string)
+- photo: <binary file> (image file)
+```
+
+**Response (201 Created):**
+
+```json
+{
+  "id": "uuid-here",
+  "name": "Bali",
+  "description": "Island of Gods with stunning beaches",
+  "country": "Indonesia",
+  "photo": "url-to-image",
+  "createdAt": "2024-01-01T00:00:00Z"
+}
+```
+
+---
+
+### PUT /api/destinations/{id}
+
+**Update destination (agent only)**
+**Headers:**
+
+```
+Authorization: Bearer {token}
+Content-Type: application/json
+```
+
+**Request Body:**
+
+```json
+{
+  "name": "Bali Updated",
+  "description": "Updated description",
+  "country": "Indonesia"
+}
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "id": "uuid-here",
+  "name": "Bali Updated",
+  "description": "Updated description",
+  "country": "Indonesia",
+  "photo": "url-to-image",
+  "createdAt": "2024-01-01T00:00:00Z"
+}
+```
+
+---
+
+### DELETE /api/destinations/{id}
+
+**Delete destination (agent only)**
+**Headers:**
+
+```
+Authorization: Bearer {token}
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "message": "Destination deleted successfully"
+}
+```
+
+---
+
+## Bookings
+
+### GET /api/bookings
+
+**Get all bookings (agent) or own bookings (tourist)**
+**Headers:**
+
+```
+Authorization: Bearer {token}
+```
+
+**Query Parameters:**
+
+- `status` (optional): `pending`, `confirmed`, `completed`, `cancelled`
+- `page` (optional, default: 1): Page number
+- `limit` (optional, default: 10): Items per page
+
+**Response (200 OK):**
+
+```json
+[
+  {
+    "id": "uuid-here",
+    "touristId": "uuid-here",
+    "packageId": "uuid-here",
+    "status": "pending",
+    "numberOfTravelers": 2,
+    "totalPrice": 5000000,
+    "departureDate": "2025-02-15",
+    "notes": "Special requests",
+    "paymentProofUrl": null,
+    "paymentStatus": "pending",
+    "createdAt": "2024-01-01T00:00:00Z"
+  }
+]
+```
+
+---
+
+### GET /api/bookings/{id}
+
+**Get booking detail**
+**Headers:**
+
+```
+Authorization: Bearer {token}
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "id": "uuid-here",
+  "touristId": "uuid-here",
+  "packageId": "uuid-here",
+  "status": "pending",
+  "numberOfTravelers": 2,
+  "totalPrice": 5000000,
+  "departureDate": "2025-02-15",
+  "notes": "Special requests",
+  "paymentProofUrl": null,
+  "paymentStatus": "pending",
+  "createdAt": "2024-01-01T00:00:00Z"
+}
+```
+
+---
+
+### POST /api/bookings
+
+**Create new booking (tourist only)**
+**Headers:**
+
+```
+Authorization: Bearer {token}
+Content-Type: application/json
+```
+
+**Request Body:**
+
+```json
+{
+  "packageId": "uuid-here",
+  "numberOfTravelers": 2,
+  "totalPrice": 5000000,
+  "departureDate": "2025-02-15",
+  "notes": "Special requests"
+}
+```
+
+**Response (201 Created):**
+
+```json
+{
+  "id": "uuid-here",
+  "touristId": "uuid-from-token",
+  "packageId": "uuid-here",
+  "status": "pending",
+  "numberOfTravelers": 2,
+  "totalPrice": 5000000,
+  "departureDate": "2025-02-15",
+  "notes": "Special requests",
+  "paymentProofUrl": null,
+  "paymentStatus": "pending",
+  "createdAt": "2024-01-01T00:00:00Z"
+}
+```
+
+---
+
+### PUT /api/bookings/{id}/status
+
+**Update booking status (agent only)**
+**Headers:**
+
+```
+Authorization: Bearer {token}
+Content-Type: application/json
+```
+
+**Request Body:**
+
+```json
+{
+  "status": "confirmed"
+}
+```
+
+**Valid status values:** `pending`, `confirmed`, `completed`, `cancelled`
+
+**Response (200 OK):**
+
+```json
+{
+  "id": "uuid-here",
+  "status": "confirmed",
+  "updatedAt": "2024-01-02T00:00:00Z"
+}
+```
+
+---
+
+### POST /api/bookings/{id}/payment-proof
+
+**Upload payment proof (tourist only)**
+**Headers:**
+
+```
+Authorization: Bearer {token}
+Content-Type: multipart/form-data
+```
+
+**Request Body:**
+
+```
+- proof: <binary file> (image file of payment proof)
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "id": "uuid-here",
+  "paymentProofUrl": "url-to-proof",
+  "paymentStatus": "waiting_verification"
+}
+```
+
+---
+
+### PUT /api/bookings/{id}/payment-verify
+
+**Verify payment (agent only)**
+**Headers:**
+
+```
+Authorization: Bearer {token}
+Content-Type: application/json
+```
+
+**Request Body:**
+
+```json
+{
+  "verificationNotes": "Payment verified from bank transfer"
+}
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "id": "uuid-here",
+  "paymentStatus": "verified",
+  "paymentVerificationDate": "2024-01-02T00:00:00Z"
+}
+```
+
+---
+
+### PUT /api/bookings/{id}/payment-reject
+
+**Reject payment (agent only)**
+**Headers:**
+
+```
+Authorization: Bearer {token}
+Content-Type: application/json
+```
+
+**Request Body:**
+
+```json
+{
+  "rejectionReason": "Amount does not match booking price"
+}
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "id": "uuid-here",
+  "paymentStatus": "rejected",
+  "rejectionReason": "Amount does not match booking price"
+}
+```
+
+---
+
+### GET /api/bookings/tourist/{touristId}
+
+**Get bookings by specific tourist**
+**Headers:**
+
+```
+Authorization: Bearer {token}
+```
+
+**Response (200 OK):**
+
+```json
+[
+  {
+    "id": "uuid-here",
+    "touristId": "uuid-here",
+    "packageId": "uuid-here",
+    "status": "pending",
+    "numberOfTravelers": 2,
+    "totalPrice": 5000000,
+    "departureDate": "2025-02-15"
+  }
+]
+```
+
+---
+
+### GET /api/bookings/package/{packageId}
+
+**Get all bookings for a specific package**
+**Headers:**
+
+```
+Authorization: Bearer {token}
+```
+
+**Response (200 OK):**
+
+```json
+[
+  {
+    "id": "uuid-here",
+    "touristId": "uuid-here",
+    "packageId": "uuid-here",
+    "status": "confirmed",
+    "numberOfTravelers": 2,
+    "totalPrice": 5000000,
+    "departureDate": "2025-02-15"
+  }
+]
+```
+
+---
+
+### GET /api/bookings/payment/pending
+
+**Get all bookings with pending payment verification (agent only)**
+**Headers:**
+
+```
+Authorization: Bearer {token}
+```
+
+**Response (200 OK):**
+
+```json
+[
+  {
+    "id": "uuid-here",
+    "touristId": "uuid-here",
+    "packageId": "uuid-here",
+    "paymentProofUrl": "url-to-proof",
+    "paymentStatus": "waiting_verification",
+    "totalPrice": 5000000
+  }
+]
+```
+
+---
+
+## Reviews
+
+### GET /api/reviews
+
+**Get all reviews**
+**Query Parameters:**
+
+- `page` (optional, default: 1): Page number
+- `limit` (optional, default: 10): Items per page
+
+**Response (200 OK):**
+
+```json
+[
+  {
+    "id": "uuid-here",
+    "touristId": "uuid-here",
+    "bookingId": "uuid-here",
+    "packageId": "uuid-here",
+    "rating": 5,
+    "comment": "Amazing experience!",
+    "createdAt": "2024-01-05T00:00:00Z"
+  }
+]
+```
+
+---
+
+### GET /api/reviews/package/{packageId}
+
+**Get reviews by specific package**
+**Query Parameters:**
+
+- `page` (optional, default: 1): Page number
+- `limit` (optional, default: 10): Items per page
+
+**Response (200 OK):**
+
+```json
+[
+  {
+    "id": "uuid-here",
+    "touristId": "uuid-here",
+    "bookingId": "uuid-here",
+    "packageId": "uuid-here",
+    "rating": 5,
+    "comment": "Amazing experience!",
+    "createdAt": "2024-01-05T00:00:00Z"
+  }
+]
+```
+
+---
+
+### GET /api/reviews/tourist/{touristId}
+
+**Get reviews by specific tourist**
+**Headers:**
+
+```
+Authorization: Bearer {token}
+```
+
+**Response (200 OK):**
+
+```json
+[
+  {
+    "id": "uuid-here",
+    "touristId": "uuid-here",
+    "bookingId": "uuid-here",
+    "packageId": "uuid-here",
+    "rating": 5,
+    "comment": "Amazing experience!",
+    "createdAt": "2024-01-05T00:00:00Z"
+  }
+]
+```
+
+---
+
+### POST /api/reviews
+
+**Create new review (tourist only, after completed booking)**
+**Headers:**
+
+```
+Authorization: Bearer {token}
+Content-Type: application/json
+```
+
+**Request Body:**
+
+```json
+{
+  "bookingId": "uuid-here",
+  "packageId": "uuid-here",
+  "rating": 5,
+  "comment": "Amazing experience! Highly recommended."
+}
+```
+
+**Response (201 Created):**
+
+```json
+{
+  "id": "uuid-here",
+  "touristId": "uuid-from-token",
+  "bookingId": "uuid-here",
+  "packageId": "uuid-here",
+  "rating": 5,
+  "comment": "Amazing experience! Highly recommended.",
+  "createdAt": "2024-01-05T00:00:00Z"
+}
+```
+
+**Validation:**
+
+- `rating` must be between 1-5
+- `comment` must be provided
+- Booking must be in `completed` status
+- Tourist can only review each booking once
+
+---
+
+## Analytics
+
+### GET /api/analytics/agent/stats
+
+**Get agent statistics (agent only)**
+**Headers:**
+
+```
+Authorization: Bearer {token}
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "totalPackages": 5,
+  "totalBookings": 45,
+  "confirmedBookings": 30,
+  "pendingBookings": 10,
+  "completedBookings": 5,
+  "totalRevenue": 225000000,
+  "averageRating": 4.7,
+  "pendingPaymentVerifications": 3
+}
+```
+
+---
+
+### GET /api/analytics/agent/package-performance
+
+**Get agent's package performance (agent only)**
+**Headers:**
+
+```
+Authorization: Bearer {token}
+```
+
+**Response (200 OK):**
+
+```json
+[
+  {
+    "packageId": "uuid-here",
+    "packageName": "Bali Adventure Package",
+    "totalBookings": 15,
+    "confirmedBookings": 12,
+    "totalRevenue": 75000000,
+    "averageRating": 4.8,
+    "reviewsCount": 12
+  }
+]
+```
+
+---
+
+### GET /api/analytics/tourist/stats
+
+**Get tourist statistics (tourist only)**
+**Headers:**
+
+```
+Authorization: Bearer {token}
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "totalBookings": 8,
+  "confirmedBookings": 6,
+  "pendingBookings": 1,
+  "completedBookings": 1,
+  "cancelledBookings": 0,
+  "totalSpent": 40000000,
+  "reviewsGiven": 1
+}
+```
+
+---
+
 ## QRIS & Payment API Endpoints
 
 ### 1️⃣ POST /api/qris - Upload Static QRIS
@@ -328,7 +1140,32 @@ curl -X DELETE "http://localhost:6543/api/qris/550e8400-e29b-41d4-a716-446655440
   -H "Content-Type: application/json"
 ```
 
-### 5️⃣ POST /api/payment/generate - Generate Dynamic Payment
+---
+
+### 5️⃣ POST /api/qris/preview - Generate QRIS Preview
+
+```bash
+curl -X POST "http://localhost:6543/api/qris/preview" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "static_qris_string": "00020126450014com.midtrans...",
+    "jumlah_bayar": 1000000
+  }'
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "qr_string": "generated-qr-code-image-url",
+  "amount": 1000000,
+  "timestamp": "2024-01-01T00:00:00Z"
+}
+```
+
+---
+
+### 6️⃣ POST /api/payment/generate - Generate Dynamic Payment
 
 ```bash
 curl -X POST "http://localhost:6543/api/payment/generate" \
