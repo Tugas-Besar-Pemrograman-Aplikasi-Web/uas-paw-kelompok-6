@@ -48,11 +48,12 @@ def login(request):
         # making jwt token
         encoded = jwt.encode(
             {
-                "name": result.name,
+                "sub": str(result.id),
                 "email": result.email,
                 "role": result.role,
                 "exp": datetime.datetime.now(datetime.timezone.utc)
                 + datetime.timedelta(minutes=30),
+                "iat": datetime.datetime.now(datetime.timezone.utc),
             },
             "secret",
             algorithm="HS256",
