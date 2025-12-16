@@ -94,25 +94,30 @@ def update_package(request):
 @view_config(route_name="package_detail", request_method="DELETE", renderer="json")
 @jwt_validate
 def delete_package(request):
+    #agent forbidden access 
     if request.jwt_claims.get("role") != "agent":
         return Response(
             json_body={"error": "Forbidden : Only agent can access"}, status=403
         )
-
+    
+    #search package 
     pkg_id = request.matchdict.get("id")
 
     with Session() as session:
+        #get package by id 
         stmt = select(Package).where(Package.id == pkg_id)
         try:
             pkg = session.execute(stmt).scalars().one()
         except NoResultFound:
             return Response(json_body={"error": "Package not found"}, status=404)
-
+        
+        #forbidden for agent who dont own this package 
         if str(pkg.agent_id) != request.jwt_claims["sub"]:
             return Response(
                 json_body={"error": "Forbidden: You dont own this package"}, status=403
             )
-
+        
+        #deleting package 
         try:
             session.delete(pkg)
             session.commit()
