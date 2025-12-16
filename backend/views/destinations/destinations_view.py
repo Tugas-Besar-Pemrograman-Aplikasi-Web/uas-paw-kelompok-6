@@ -67,17 +67,20 @@ def destination_detail(request):
 @view_config(route_name="destinations", request_method="POST", renderer="json")
 @jwt_validate
 def create_destinations(request):
+    #agent forbidden 
     if request.jwt_claims["role"] != "agent":
         return Response(
             json_body={"error": "Forbidden : Only agent can access"}, status=403
         )
 
     try:
+        #request for create dest 
         req_data = DestinationRequest(**request.json_body)
     except ValidationError as err:
         return Response(json_body={"error": str(err.errors())}, status=400)
 
     with Session() as session:
+        #create new destination
         new_destination = Destination(
             name = req_data.name,
             description= req_data.description,
@@ -86,6 +89,7 @@ def create_destinations(request):
         )
 
         try:
+            #save to database
             session.add(new_destination)
             session.commit()
             session.refresh(new_destination)
