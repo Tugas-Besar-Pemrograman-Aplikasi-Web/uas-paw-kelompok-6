@@ -1,3 +1,4 @@
+#serialization data for default format
 def serialization_data(pkg):
     return {
         "id": str(pkg.id),
