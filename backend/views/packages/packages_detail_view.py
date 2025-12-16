@@ -9,7 +9,7 @@ from pydantic import BaseModel, ValidationError
 from typing import Optional, List
 from . import serialization_data
 
-
+#request class 
 class PackageUpdateRequest(BaseModel):
     name: Optional[str] = None
     duration: Optional[int] = None
@@ -22,10 +22,12 @@ class PackageUpdateRequest(BaseModel):
 
 @view_config(route_name="package_detail", request_method="GET", renderer="json")
 def package_detail(request):
+    #packges's search 
     pkg_id = request.matchdict.get("id")
 
     with Session() as session:
         try:
+            #result of filetered package 
             stmt = select(Package).where(Package.id == pkg_id)
             pkg = session.execute(stmt).scalars().one()
             return serialization_data(pkg)
@@ -41,19 +43,23 @@ def package_detail(request):
 @view_config(route_name="package_detail", request_method="PUT", renderer="json")
 @jwt_validate
 def update_package(request):
+    #agent't forbidden 
     if request.jwt_claims.get("role") != "agent":
         return Response(
             json_body={"error": "Forbidden : Only agent can access"}, status=403
         )
 
+    #package's search 
     pkg_id = request.matchdict.get("id")
 
     try:
+        #save request with request class 
         req_data = PackageUpdateRequest(**request.json_body)
     except ValidationError as err:
         return Response(json_body={"error": str(err.errors())}, status=400)
 
     with Session() as session:
+        #get package 
         stmt = select(Package).where(Package.id == pkg_id)
         try:
             pkg = session.execute(stmt).scalars().one()
@@ -65,7 +71,7 @@ def update_package(request):
                 json_body={"error": "Forbidden: You do not own this package"},
                 status=403,
             )
-
+        #apply updating data 
         update_data = req_data.model_dump(exclude_unset=True)
         for key, value in update_data.items():
             if key == "maxTravelers":
@@ -75,6 +81,7 @@ def update_package(request):
             setattr(pkg, key, value)
 
         try:
+            #push updated data 
             session.commit()
             session.refresh(pkg)
             return serialization_data(pkg)
