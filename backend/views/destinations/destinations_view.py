@@ -84,24 +84,10 @@ def create_destinations(request):
             storage_dir = Path("storage/destinations")
             storage_dir.mkdir(parents=True, exist_ok=True)
             
-            # Extract values from multidict - iterate to find strings
-            name = None
-            description = None
-            country = None
-            photo_file = None
-            
-            for key in request.POST.keys():
-                value = request.POST[key]
-                if key == "photo" and hasattr(value, 'filename'):
-                    photo_file = value
-                elif key == "name":
-                    name = value if isinstance(value, str) else str(value)
-                elif key == "description":
-                    description = value if isinstance(value, str) else str(value)
-                elif key == "country":
-                    country = value if isinstance(value, str) else str(value)
-            
-            print(f"DEBUG - Extracted: name={name}, desc={description}, country={country}, photo={photo_file}")
+            name = request.POST.get("name", "")
+            description = request.POST.get("description", "")
+            country = request.POST.get("country", "")
+            photo_file = request.POST.get("photo")
             
             #validasi required 
             if not name or not description or not country:
