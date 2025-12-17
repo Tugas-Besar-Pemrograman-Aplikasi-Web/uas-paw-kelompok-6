@@ -12,39 +12,35 @@ import os
 import uuid
 from pathlib import Path
 
-
-class DestinationRequest(BaseModel):
+class DestinationFilterRequest(BaseModel):
     country: Optional[str] = None
     name: Optional[str] = None
-    description: Optional[str] = None
-    photo_url: Optional[str] = None
+
+class DestinationRequest(BaseModel):
+    country: str
+    name: str
+    description: str
+    photo_url: str
 
 
 @view_config(route_name="destinations", request_method="GET", renderer="json")
 def destinations(request):
-    # request validation
-    try:
-        req_data = DestinationRequest(**request.params.mixed())
-    except ValidationError as err:
-        return Response(json_body={"error": str(err.errors())}, status=400)
+    country = request.params.get("country")
+    name = request.params.get("name")
 
     # get destination from db
     with Session() as session:
-        stmt = select(
-            Destination
-        )  # building the query step by step if the url have some parameters
-        if req_data.country is not None:
-            stmt = stmt.where(Destination.country == req_data.country)
-        if req_data.name is not None:
-            stmt = stmt.where(Destination.name == req_data.name)
+        stmt = select(Destination)
+        
+        if country:
+            stmt = stmt.where(Destination.country == country)
+        if name:
+            stmt = stmt.where(Destination.name == name)
 
         try:
-            result = (
-                session.execute(stmt).scalars().all()
-            )  # agar kembalikan semua, atau tidak sama sekali (imo gitu sih, cmiiw)
-            return [
-                serialization_data(dest) for dest in result
-            ]  # serialisasikan semua destinasi yang ada dari .all()
+            #pakai all, agar kembali semua atau tidak sama sekali
+            result = session.execute(stmt).scalars().all()
+            return [serialization_data(dest) for dest in result]
         except Exception as e:
             print(e)
             return Response(json_body={"error": "Internal Server Error"}, status=500)
@@ -70,71 +66,110 @@ def destination_detail(request):
 @view_config(route_name="destinations", request_method="POST", renderer="json")
 @jwt_validate
 def create_destinations(request):
-    #agent forbidden 
+    # Agent forbidden 
     if request.jwt_claims["role"] != "agent":
         return Response(
             json_body={"error": "Forbidden : Only agent can access"}, status=403
         )
     
-    #create storage dir 
-    storage_dir = Path("storage/destinations")
-    storage_dir.mkdir(parents=True, exist_ok=True)
-
-
     try:
-        photo_url= None
-        if "photo" in request.POST:
-            photo_file = request.POST.get("photo")
-
-            if photo_file and hasattr(photo_file,'filename'):
-                filename = photo_file.filename
-                if filename and filename != '':
-                    allowed_extensions = {'.jpg', '.jpeg', '.png', '.gif', '.webp'}
-                    file_ext = Path(filename).suffix.lower()
-
-                    if file_ext not in allowed_extensions:
-                        return Response(json_body={"error": f"File type not allowed. Allowed: {', '.join(allowed_extensions)}"}, status=400)
-
-                    file_content = photo_file.file.read()
-                    if len(file_content) > 5 * 1024 * 1024:
-                        return Response(json_body={"error": "File size exceeds 5MB limit"}, status=400)
-
-                    unique_filename = f"{uuid.uuid4()}{file_ext}"
-                    file_path = storage_dir / unique_filename
-                   
-                    with open(file_path, 'wb') as f:
-                        f.write(file_content)
-                    
-                    photo_url = f"/destination/{unique_filename}"
-
-        if request.content_type and 'application/json' in request.content_type:
+        # Check content type
+        is_json = request.content_type and 'application/json' in request.content_type
+       #json 
+        if is_json:
             req_data = DestinationRequest(**request.json_body)
+            
         else:
-            # Form data
-            form_dict = {
-                "name": request.POST.get("name"),
-                "description": request.POST.get("description"),
-                "country": request.POST.get("country"),
-                "photo_url": photo_url or request.POST.get("photo_url")
-            }
-            req_data = DestinationRequest(**form_dict)
+            #form 
+            storage_dir = Path("storage/destinations")
+            storage_dir.mkdir(parents=True, exist_ok=True)
+            
+            # Extract values from multidict - iterate to find strings
+            name = None
+            description = None
+            country = None
+            photo_file = None
+            
+            for key in request.POST.keys():
+                value = request.POST[key]
+                if key == "photo" and hasattr(value, 'filename'):
+                    photo_file = value
+                elif key == "name":
+                    name = value if isinstance(value, str) else str(value)
+                elif key == "description":
+                    description = value if isinstance(value, str) else str(value)
+                elif key == "country":
+                    country = value if isinstance(value, str) else str(value)
+            
+            print(f"DEBUG - Extracted: name={name}, desc={description}, country={country}, photo={photo_file}")
+            
+            #validasi required 
+            if not name or not description or not country:
+                return Response(
+                    json_body={"error": "Missing required fields: name, description, country"}, 
+                    status=400
+                )
+            
+            if photo_file is None:
+                return Response(json_body={"error": "Photo file is required"}, status=400)
+            
+            # Validasi file 
+            filename = photo_file.filename
+            if not filename:
+                return Response(
+                    json_body={"error": "Photo file is required"}, 
+                    status=400
+                )
+            
+            allowed_extensions = {'.jpg', '.jpeg', '.png', '.gif', '.webp'}
+            file_ext = Path(filename).suffix.lower()
+            
+            if file_ext not in allowed_extensions:
+                return Response(
+                    json_body={"error": f"File type not allowed. Allowed: {', '.join(allowed_extensions)}"}, 
+                    status=400
+                )
+            
+            # validasi size file 
+            file_content = photo_file.file.read()
+            if len(file_content) > 5 * 1024 * 1024:
+                return Response(json_body={"error": "File size exceeds 5MB limit"}, status=400)
+            
+            # save foto 
+            unique_filename = f"{uuid.uuid4()}{file_ext}"
+            file_path = storage_dir / unique_filename
+            
+            with open(file_path, 'wb') as f:
+                f.write(file_content)
+            
+            photo_url = f"/destinations/{unique_filename}"
+            
+            # create request 
+            req_data = DestinationRequest(
+                name=name,
+                description=description,
+                country=country,
+                photo_url=photo_url
+            )
 
     except ValidationError as err:
         return Response(json_body={"error": str(err.errors())}, status=400)
     except Exception as e:
+        print(f"Request error: {e}")
+        import traceback
+        traceback.print_exc()
         return Response(json_body={"error": f"Invalid request: {str(e)}"}, status=400)
 
+    # Save to database
     with Session() as session:
-        #create new destination
         new_destination = Destination(
-            name = req_data.name,
-            description= req_data.description,
-            photo_url= req_data.photo_url,
-            country = req_data.country,
+            name=req_data.name,
+            description=req_data.description,
+            photo_url=req_data.photo_url,
+            country=req_data.country,
         )
 
         try:
-            #save to database
             session.add(new_destination)
             session.commit()
             session.refresh(new_destination)
