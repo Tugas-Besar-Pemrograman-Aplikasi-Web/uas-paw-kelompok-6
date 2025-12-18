@@ -529,6 +529,35 @@ This project is for educational purposes as part of IF25-22014 course at Institu
 
 ---
 
+**Screenshot Application**
+
+- Landing Page Home
+![1766050043624](image/README/1766050043624.png)
+![1766050061530](image/README/1766050061530.png)
+![1766050074947](image/README/1766050074947.png)
+
+- Destination Page
+![1766050102517](image/README/1766050102517.png)
+- Packages page
+![1766050120295](image/README/1766050120295.png)
+- Review Package
+![1766050258464](image/README/1766050258464.png)
+- Booking
+![1766050270261](image/README/1766050270261.png)
+- Payment Integration
+![1766050305254](image/README/1766050305254.png)
+- Dashboard Agent - CRUD and Manage 'Packages and Destinations'
+![1766050192619](image/README/1766050192619.png)
+- Dashboard Agent - payment verification - analytics
+![1766050423934](image/README/1766050423934.png)
+
+- Video Presentation (done)
+
+- Link deployment (frontend dan backend)
+
+
+---
+
 **Course:** IF25-22014 - Pengembangan Aplikasi Web
 
 **Institution:** Institut Teknologi Sumatera
