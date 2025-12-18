@@ -1,88 +1,83 @@
-import { useState, useEffect, useCallback } from "react";
-import {
-  getAllDestinations,
-  getDestinationById,
-  createDestination,
-} from "@/services/destination.service";
+import { useEffect, useMemo, useState, useCallback } from "react";
+import { toast } from "sonner";
+import * as destinationService from "@/services/destination.service";
+import * as packageService from "@/services/package.service";
+import { useDestinationStore } from "@/store/destination-store";
 
-/**
- * Hook untuk mengambil semua destinations
- */
 export function useDestinations() {
-  const [destinations, setDestinations] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { destinations, packages, setDestinations, setPackages } =
+    useDestinationStore();
 
-  const fetchDestinations = useCallback(async () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState("all");
+
+  const fetchData = useCallback(async () => {
     setIsLoading(true);
-    setError(null);
     try {
-      const data = await getAllDestinations();
-      setDestinations(data);
+      const [destinationsData, packagesData] = await Promise.all([
+        destinationService.getAllDestinations(),
+        packageService.getAllPackages(),
+      ]);
+      setDestinations(destinationsData);
+      setPackages(packagesData);
     } catch (err) {
-      setError(err.message || "Gagal mengambil data destinations");
+      console.error(err);
+      toast.error("Failed to load destinations");
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [setDestinations, setPackages]);
 
   useEffect(() => {
-    fetchDestinations();
-  }, [fetchDestinations]);
+    fetchData();
+  }, [fetchData]);
 
-  return { destinations, isLoading, error, refetch: fetchDestinations };
-}
+  const countries = useMemo(() => {
+    const unique = Array.from(new Set(destinations.map((d) => d.country)));
+    return ["all", ...unique.sort()];
+  }, [destinations]);
 
-/**
- * Hook untuk mengambil destination berdasarkan ID
- */
-export function useDestination(id) {
-  const [destination, setDestination] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const filteredDestinations = useMemo(() => {
+    return destinations.filter((dest) => {
+      const q = searchQuery.toLowerCase();
+      const matchesSearch =
+        dest.name.toLowerCase().includes(q) ||
+        dest.description.toLowerCase().includes(q) ||
+        dest.country.toLowerCase().includes(q);
 
-  const fetchDestination = useCallback(async () => {
-    if (!id) return;
-    setIsLoading(true);
-    setError(null);
-    try {
-      const data = await getDestinationById(id);
-      setDestination(data);
-    } catch (err) {
-      setError(err.message || "Gagal mengambil data destination");
-    } finally {
-      setIsLoading(false);
-    }
-  }, [id]);
+      const matchesCountry =
+        selectedCountry === "all" || dest.country === selectedCountry;
 
-  useEffect(() => {
-    fetchDestination();
-  }, [fetchDestination]);
+      return matchesSearch && matchesCountry;
+    });
+  }, [destinations, searchQuery, selectedCountry]);
 
-  return { destination, isLoading, error, refetch: fetchDestination };
-}
+  const getPopularPackages = useCallback(
+    (destinationId) => {
+      return packages
+        .filter((p) => p.destinationId === destinationId)
+        .sort((a, b) => (b.rating || 0) - (a.rating || 0))
+        .slice(0, 3);
+    },
+    [packages]
+  );
 
-/**
- * Hook untuk operasi mutasi destination (create)
- * Note: Update dan delete bisa ditambahkan ketika service mendukung
- */
-export function useDestinationMutation() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const getTotalPackages = useCallback(
+    (destinationId) =>
+      packages.filter((p) => p.destinationId === destinationId).length,
+    [packages]
+  );
 
-  const create = useCallback(async (data) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const result = await createDestination(data);
-      return result;
-    } catch (err) {
-      setError(err.message || "Gagal membuat destination");
-      throw err;
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  return { create, isLoading, error };
+  return {
+    isLoading,
+    destinations: filteredDestinations,
+    countries,
+    searchQuery,
+    selectedCountry,
+    setSearchQuery,
+    setSelectedCountry,
+    getPopularPackages,
+    getTotalPackages,
+  };
 }

@@ -1,147 +1,82 @@
-import { useState, useEffect, useCallback } from "react";
-import {
-  getAllPackages,
-  getPackageById,
-  getPackagesByAgent,
-  createPackage,
-  updatePackage,
-  deletePackage,
-} from "@/services/package.service";
+import { useEffect, useState, useCallback, useMemo } from "react";
+import { toast } from "sonner";
+import * as packageService from "@/services/package.service";
+import * as destinationService from "@/services/destination.service";
+import * as bookingService from "@/services/booking.service";
 
-/**
- * Hook untuk mengambil semua packages dengan filter
- */
-export function usePackages(filters = {}) {
+export function useManagePackages(userId) {
+  const [isLoading, setIsLoading] = useState(true);
   const [packages, setPackages] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [destinations, setDestinations] = useState([]);
+  const [bookings, setBookings] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [deletePackageId, setDeletePackageId] = useState(null);
 
-  const fetchPackages = useCallback(async () => {
+  const fetchData = useCallback(async () => {
+    if (!userId) return;
     setIsLoading(true);
-    setError(null);
+
     try {
-      const data = await getAllPackages(filters);
-      setPackages(data);
+      const [agentPackages, allDestinations] = await Promise.all([
+        packageService.getPackagesByAgent(userId),
+        destinationService.getAllDestinations(),
+      ]);
+
+      setPackages(agentPackages);
+      setDestinations(allDestinations);
+
+      const bookingRequests = agentPackages.map((pkg) =>
+        bookingService
+          .getBookingsByPackage(pkg.id)
+          .catch(() => []) // ⬅️ NO empty catch
+      );
+
+      const results = await Promise.all(bookingRequests);
+      setBookings(results.flat());
     } catch (err) {
-      setError(err.message || "Gagal mengambil data packages");
+      console.error(err);
+      toast.error("Failed to load packages");
     } finally {
       setIsLoading(false);
     }
-  }, [JSON.stringify(filters)]);
+  }, [userId]);
 
   useEffect(() => {
-    fetchPackages();
-  }, [fetchPackages]);
+    fetchData();
+  }, [fetchData]);
 
-  return { packages, isLoading, error, refetch: fetchPackages };
-}
+  const filteredPackages = useMemo(() => {
+    return packages.filter((pkg) =>
+      pkg.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [packages, searchQuery]);
 
-/**
- * Hook untuk mengambil package berdasarkan ID
- */
-export function usePackage(id) {
-  const [packageData, setPackageData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  const fetchPackage = useCallback(async () => {
-    if (!id) return;
-    setIsLoading(true);
-    setError(null);
+  const deletePackage = async (id) => {
     try {
-      const data = await getPackageById(id);
-      setPackageData(data);
-    } catch (err) {
-      setError(err.message || "Gagal mengambil data package");
+      await packageService.deletePackage(id);
+      setPackages((prev) => prev.filter((p) => p.id !== id));
+      toast.success("Package deleted");
+    } catch {
+      toast.error("Failed to delete package");
     } finally {
-      setIsLoading(false);
+      setDeletePackageId(null);
     }
-  }, [id]);
+  };
 
-  useEffect(() => {
-    fetchPackage();
-  }, [fetchPackage]);
+  return {
+    // state
+    isLoading,
+    packages,
+    destinations,
+    bookings,
+    searchQuery,
+    deletePackageId,
+    filteredPackages,
 
-  return { packageData, isLoading, error, refetch: fetchPackage };
-}
-
-/**
- * Hook untuk mengambil packages berdasarkan agent
- */
-export function useAgentPackages(agentId) {
-  const [packages, setPackages] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  const fetchPackages = useCallback(async () => {
-    if (!agentId) return;
-    setIsLoading(true);
-    setError(null);
-    try {
-      const data = await getPackagesByAgent(agentId);
-      setPackages(data);
-    } catch (err) {
-      setError(err.message || "Gagal mengambil data packages");
-    } finally {
-      setIsLoading(false);
-    }
-  }, [agentId]);
-
-  useEffect(() => {
-    fetchPackages();
-  }, [fetchPackages]);
-
-  return { packages, isLoading, error, refetch: fetchPackages };
-}
-
-/**
- * Hook untuk operasi mutasi package (create, update, delete)
- */
-export function usePackageMutation() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const create = useCallback(async (data) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const result = await createPackage(data);
-      return result;
-    } catch (err) {
-      setError(err.message || "Gagal membuat package");
-      throw err;
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  const update = useCallback(async (id, data) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const result = await updatePackage(id, data);
-      return result;
-    } catch (err) {
-      setError(err.message || "Gagal mengupdate package");
-      throw err;
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  const remove = useCallback(async (id) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const result = await deletePackage(id);
-      return result;
-    } catch (err) {
-      setError(err.message || "Gagal menghapus package");
-      throw err;
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  return { create, update, remove, isLoading, error };
+    // actions
+    setSearchQuery,
+    setDeletePackageId,
+    deletePackage,
+    refetch: fetchData,
+  };
 }
