@@ -396,48 +396,6 @@ Authorization: Bearer {token}
 
 ---
 
-## Destinations
-
-### GET /api/destinations
-
-**Get all destinations**
-**Query Parameters:**
-
-- `country` (optional): Filter by country
-- `search` (optional): Search by name or description
-  **Response (200 OK):**
-
-```json
-[
-  {
-    "id": "uuid-here",
-    "name": "Maldives",
-    "description": "Crystal clear waters and luxurious overwater villas...",
-    "photoUrl": "https://example.com/image.jpg",
-    "country": "Maldives"
-  }
-]
-```
-
----
-
-### GET /api/destinations/:id
-
-**Get destination by ID**
-**Response (200 OK):**
-
-```json
-{
-  "id": "uuid-here",
-  "name": "Maldives",
-  "description": "Crystal clear waters...",
-  "photoUrl": "https://example.com/image.jpg",
-  "country": "Maldives"
-}
-```
-
----
-
 ## Packages
 
 ### GET /api/packages
