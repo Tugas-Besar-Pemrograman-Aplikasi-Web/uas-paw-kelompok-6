@@ -318,7 +318,7 @@ uas-pyramid-backend  Up
 <https://wonderfull-inn.web.id>
 
 ### Frontend
-<https://wonderfull-inn.web.id>
+<https://wonderfull-inn.vercel.app>
 
 ## API Documentation
 
