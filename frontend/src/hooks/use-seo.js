@@ -6,7 +6,7 @@ const DEFAULT_DESCRIPTION =
 const DEFAULT_KEYWORDS =
   "travel packages, vacation booking, travel agent, tourism, destinations, holiday packages";
 
-export const useSEO = ({ title, description, keywords, ogTitle, ogDescription, ogImage } = {}) => {
+export function useSeo({ title, description, keywords, ogTitle, ogDescription, ogImage } = {}) {
   useEffect(() => {
     // Set page title
     const pageTitle = title ? `${title} | ${DEFAULT_TITLE}` : DEFAULT_TITLE;
@@ -90,4 +90,7 @@ export const useSEO = ({ title, description, keywords, ogTitle, ogDescription, o
       document.title = DEFAULT_TITLE;
     };
   }, [title, description, keywords, ogTitle, ogDescription, ogImage]);
-};
+}
+
+// Alias untuk backward compatibility
+export { useSeo as useSEO };

@@ -1,3 +1,7 @@
+// Core/Generic Hooks
+export { useFetch, useFetchById } from "./use-fetch";
+export { useMutation, useMutations } from "./use-mutation";
+
 // Utility Hooks
 export { useAsync } from "./use-async";
 export { useDebounce } from "./use-debounce";

@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
+import { useCallback } from "react";
+import { useFetch } from "./use-fetch";
 import {
   getAgentStats,
   getPackagePerformance,
@@ -9,82 +10,34 @@ import {
  * Hook untuk mengambil statistics agent
  */
 export function useAgentStats() {
-  const [stats, setStats] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { data, isLoading, error, refetch } = useFetch(
+    useCallback(() => getAgentStats(), []),
+    { errorMessage: "Gagal mengambil data statistics" }
+  );
 
-  const fetchStats = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const data = await getAgentStats();
-      setStats(data);
-    } catch (err) {
-      setError(err.message || "Gagal mengambil data statistics");
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchStats();
-  }, [fetchStats]);
-
-  return { stats, isLoading, error, refetch: fetchStats };
+  return { stats: data, isLoading, error, refetch };
 }
 
 /**
  * Hook untuk mengambil package performance
  */
 export function usePackagePerformance() {
-  const [performance, setPerformance] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { data, isLoading, error, refetch } = useFetch(
+    useCallback(() => getPackagePerformance(), []),
+    { errorMessage: "Gagal mengambil data performance" }
+  );
 
-  const fetchPerformance = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const data = await getPackagePerformance();
-      setPerformance(data);
-    } catch (err) {
-      setError(err.message || "Gagal mengambil data performance");
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchPerformance();
-  }, [fetchPerformance]);
-
-  return { performance, isLoading, error, refetch: fetchPerformance };
+  return { performance: data, isLoading, error, refetch };
 }
 
 /**
  * Hook untuk mengambil tourist statistics
  */
 export function useTouristStats() {
-  const [stats, setStats] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { data, isLoading, error, refetch } = useFetch(
+    useCallback(() => getTouristStats(), []),
+    { errorMessage: "Gagal mengambil data statistics" }
+  );
 
-  const fetchStats = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const data = await getTouristStats();
-      setStats(data);
-    } catch (err) {
-      setError(err.message || "Gagal mengambil data statistics");
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchStats();
-  }, [fetchStats]);
-
-  return { stats, isLoading, error, refetch: fetchStats };
+  return { stats: data, isLoading, error, refetch };
 }
