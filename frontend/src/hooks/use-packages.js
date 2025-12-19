@@ -1,4 +1,6 @@
-import { useState, useEffect, useCallback } from "react";
+import { useCallback } from "react";
+import { useFetch, useFetchById } from "./use-fetch";
+import { useMutations } from "./use-mutation";
 import {
   getAllPackages,
   getPackageById,
@@ -12,136 +14,61 @@ import {
  * Hook untuk mengambil semua packages dengan filter
  */
 export function usePackages(filters = {}) {
-  const [packages, setPackages] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // Stringify filters untuk stable dependency
+  const filtersKey = JSON.stringify(filters);
 
-  const fetchPackages = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const data = await getAllPackages(filters);
-      setPackages(data);
-    } catch (err) {
-      setError(err.message || "Gagal mengambil data packages");
-    } finally {
-      setIsLoading(false);
-    }
-  }, [JSON.stringify(filters)]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- filtersKey is used as proxy for filters
+  const fetchPackages = useCallback(() => getAllPackages(filters), [filtersKey]);
 
-  useEffect(() => {
-    fetchPackages();
-  }, [fetchPackages]);
+  const { data, isLoading, error, refetch } = useFetch(fetchPackages, {
+    errorMessage: "Gagal mengambil data packages",
+    initialData: [],
+  });
 
-  return { packages, isLoading, error, refetch: fetchPackages };
+  return { packages: data, isLoading, error, refetch };
 }
 
 /**
  * Hook untuk mengambil package berdasarkan ID
  */
 export function usePackage(id) {
-  const [packageData, setPackageData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { data, isLoading, error, refetch } = useFetchById(getPackageById, id, {
+    errorMessage: "Gagal mengambil data package",
+  });
 
-  const fetchPackage = useCallback(async () => {
-    if (!id) return;
-    setIsLoading(true);
-    setError(null);
-    try {
-      const data = await getPackageById(id);
-      setPackageData(data);
-    } catch (err) {
-      setError(err.message || "Gagal mengambil data package");
-    } finally {
-      setIsLoading(false);
-    }
-  }, [id]);
-
-  useEffect(() => {
-    fetchPackage();
-  }, [fetchPackage]);
-
-  return { packageData, isLoading, error, refetch: fetchPackage };
+  return { packageData: data, isLoading, error, refetch };
 }
 
 /**
  * Hook untuk mengambil packages berdasarkan agent
  */
 export function useAgentPackages(agentId) {
-  const [packages, setPackages] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { data, isLoading, error, refetch } = useFetchById(getPackagesByAgent, agentId, {
+    errorMessage: "Gagal mengambil data packages",
+    initialData: [],
+  });
 
-  const fetchPackages = useCallback(async () => {
-    if (!agentId) return;
-    setIsLoading(true);
-    setError(null);
-    try {
-      const data = await getPackagesByAgent(agentId);
-      setPackages(data);
-    } catch (err) {
-      setError(err.message || "Gagal mengambil data packages");
-    } finally {
-      setIsLoading(false);
-    }
-  }, [agentId]);
-
-  useEffect(() => {
-    fetchPackages();
-  }, [fetchPackages]);
-
-  return { packages, isLoading, error, refetch: fetchPackages };
+  return { packages: data, isLoading, error, refetch };
 }
 
 /**
  * Hook untuk operasi mutasi package (create, update, delete)
  */
 export function usePackageMutation() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const create = useCallback(async (data) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const result = await createPackage(data);
-      return result;
-    } catch (err) {
-      setError(err.message || "Gagal membuat package");
-      throw err;
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  const update = useCallback(async (id, data) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const result = await updatePackage(id, data);
-      return result;
-    } catch (err) {
-      setError(err.message || "Gagal mengupdate package");
-      throw err;
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  const remove = useCallback(async (id) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const result = await deletePackage(id);
-      return result;
-    } catch (err) {
-      setError(err.message || "Gagal menghapus package");
-      throw err;
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+  const { create, update, remove, isLoading, error } = useMutations({
+    create: {
+      fn: createPackage,
+      options: { errorMessage: "Gagal membuat package" },
+    },
+    update: {
+      fn: (id, data) => updatePackage(id, data),
+      options: { errorMessage: "Gagal mengupdate package" },
+    },
+    remove: {
+      fn: deletePackage,
+      options: { errorMessage: "Gagal menghapus package" },
+    },
+  });
 
   return { create, update, remove, isLoading, error };
 }

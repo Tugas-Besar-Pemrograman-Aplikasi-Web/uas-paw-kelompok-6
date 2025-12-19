@@ -1,4 +1,6 @@
-import { useState, useEffect, useCallback } from "react";
+import { useCallback } from "react";
+import { useFetch, useFetchById } from "./use-fetch";
+import { useMutations } from "./use-mutation";
 import {
   getAllBookings,
   getBookingById,
@@ -14,193 +16,79 @@ import {
  * Hook untuk mengambil semua bookings (Admin/Agent)
  */
 export function useBookings() {
-  const [bookings, setBookings] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { data, isLoading, error, refetch } = useFetch(
+    useCallback(() => getAllBookings(), []),
+    { errorMessage: "Gagal mengambil data bookings", initialData: [] }
+  );
 
-  const fetchBookings = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const data = await getAllBookings();
-      setBookings(data);
-    } catch (err) {
-      setError(err.message || "Gagal mengambil data bookings");
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchBookings();
-  }, [fetchBookings]);
-
-  return { bookings, isLoading, error, refetch: fetchBookings };
+  return { bookings: data, isLoading, error, refetch };
 }
 
 /**
  * Hook untuk mengambil booking berdasarkan ID
  */
 export function useBooking(id) {
-  const [booking, setBooking] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { data, isLoading, error, refetch } = useFetchById(getBookingById, id, {
+    errorMessage: "Gagal mengambil data booking",
+  });
 
-  const fetchBooking = useCallback(async () => {
-    if (!id) return;
-    setIsLoading(true);
-    setError(null);
-    try {
-      const data = await getBookingById(id);
-      setBooking(data);
-    } catch (err) {
-      setError(err.message || "Gagal mengambil data booking");
-    } finally {
-      setIsLoading(false);
-    }
-  }, [id]);
-
-  useEffect(() => {
-    fetchBooking();
-  }, [fetchBooking]);
-
-  return { booking, isLoading, error, refetch: fetchBooking };
+  return { booking: data, isLoading, error, refetch };
 }
 
 /**
  * Hook untuk mengambil bookings berdasarkan tourist
  */
 export function useTouristBookings(touristId) {
-  const [bookings, setBookings] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { data, isLoading, error, refetch } = useFetchById(getBookingsByTourist, touristId, {
+    errorMessage: "Gagal mengambil data bookings",
+    initialData: [],
+  });
 
-  const fetchBookings = useCallback(async () => {
-    if (!touristId) return;
-    setIsLoading(true);
-    setError(null);
-    try {
-      const data = await getBookingsByTourist(touristId);
-      setBookings(data);
-    } catch (err) {
-      setError(err.message || "Gagal mengambil data bookings");
-    } finally {
-      setIsLoading(false);
-    }
-  }, [touristId]);
-
-  useEffect(() => {
-    fetchBookings();
-  }, [fetchBookings]);
-
-  return { bookings, isLoading, error, refetch: fetchBookings };
+  return { bookings: data, isLoading, error, refetch };
 }
 
 /**
  * Hook untuk mengambil bookings berdasarkan package
  */
 export function usePackageBookings(packageId) {
-  const [bookings, setBookings] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { data, isLoading, error, refetch } = useFetchById(getBookingsByPackage, packageId, {
+    errorMessage: "Gagal mengambil data bookings",
+    initialData: [],
+  });
 
-  const fetchBookings = useCallback(async () => {
-    if (!packageId) return;
-    setIsLoading(true);
-    setError(null);
-    try {
-      const data = await getBookingsByPackage(packageId);
-      setBookings(data);
-    } catch (err) {
-      setError(err.message || "Gagal mengambil data bookings");
-    } finally {
-      setIsLoading(false);
-    }
-  }, [packageId]);
-
-  useEffect(() => {
-    fetchBookings();
-  }, [fetchBookings]);
-
-  return { bookings, isLoading, error, refetch: fetchBookings };
+  return { bookings: data, isLoading, error, refetch };
 }
 
 /**
  * Hook untuk mengambil pending payment bookings (Agent)
  */
 export function usePendingPayments() {
-  const [bookings, setBookings] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { data, isLoading, error, refetch } = useFetch(
+    useCallback(() => getPendingPaymentBookings(), []),
+    { errorMessage: "Gagal mengambil data pending payments", initialData: [] }
+  );
 
-  const fetchBookings = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const data = await getPendingPaymentBookings();
-      setBookings(data);
-    } catch (err) {
-      setError(err.message || "Gagal mengambil data pending payments");
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchBookings();
-  }, [fetchBookings]);
-
-  return { bookings, isLoading, error, refetch: fetchBookings };
+  return { bookings: data, isLoading, error, refetch };
 }
 
 /**
  * Hook untuk operasi mutasi booking (create, update status, cancel)
  */
 export function useBookingMutation() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const create = useCallback(async (data) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const result = await createBooking(data);
-      return result;
-    } catch (err) {
-      setError(err.message || "Gagal membuat booking");
-      throw err;
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  const updateStatus = useCallback(async (id, status) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const result = await updateBookingStatus({ id, status });
-      return result;
-    } catch (err) {
-      setError(err.message || "Gagal mengupdate status booking");
-      throw err;
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  const cancel = useCallback(async (id) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const result = await cancelBooking(id);
-      return result;
-    } catch (err) {
-      setError(err.message || "Gagal membatalkan booking");
-      throw err;
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+  const { create, updateStatus, cancel, isLoading, error } = useMutations({
+    create: {
+      fn: createBooking,
+      options: { errorMessage: "Gagal membuat booking" },
+    },
+    updateStatus: {
+      fn: (id, status) => updateBookingStatus({ id, status }),
+      options: { errorMessage: "Gagal mengupdate status booking" },
+    },
+    cancel: {
+      fn: cancelBooking,
+      options: { errorMessage: "Gagal membatalkan booking" },
+    },
+  });
 
   return { create, updateStatus, cancel, isLoading, error };
 }

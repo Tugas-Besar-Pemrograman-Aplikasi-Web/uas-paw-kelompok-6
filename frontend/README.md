@@ -4,14 +4,14 @@ A modern, full-featured travel package booking platform built with React, TypeSc
 
 ## Features
 
-### Core Features (All Implemented )
+### Core Features (All Implemented)
 
 1. **User Authentication** - Register, Login with Tourist and Travel Agent roles
 2. **Package Management** - Agent: Full CRUD packages | Tourist: Browse and view packages
 3. **Destination Catalog** - Browse destinations with photos, descriptions, and packages
 4. **Booking System** - Tourist: Book packages (date, travelers), view all bookings
 5. **Booking Management** - Agent: View and manage bookings (confirm/cancel)
-6. **Reviews System** - Tourist: Write reviews after trip | View package ratings 
+6. **Reviews System** - Tourist: Write reviews after trip | View package ratings
 
 ### Additional Features
 
@@ -25,7 +25,7 @@ A modern, full-featured travel package booking platform built with React, TypeSc
 - Search and filter functionality
 - Toast notifications for user feedback
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Framework:** React 19.2.1 + Vite 7.2.4
 - **Language:** TypeScript 5.9.3
@@ -41,7 +41,7 @@ A modern, full-featured travel package booking platform built with React, TypeSc
 - **Notifications:** Sonner
 - **Security:** CryptoJS (SHA-256 password hashing)
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 src/
@@ -94,7 +94,7 @@ src/
 └── App.tsx             # Main app component with routing
 ```
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -181,7 +181,7 @@ bun run preview
 npm run preview
 ```
 
-## 👥 Demo Accounts
+## Demo Accounts
 
 ### Tourist Account
 
@@ -195,7 +195,7 @@ npm run preview
 - **Password:** (any password works)
 - **Role:** Agent
 
-## 📝 Form Validation
+## Form Validation
 
 All forms use Zod for real-time validation:
 
@@ -206,7 +206,7 @@ All forms use Zod for real-time validation:
 - **Review:** Rating (1-5 stars), comment (10-500 chars)
 - **Contact:** Name (3+ chars), valid email, subject (5+ chars), message (20-1000 chars)
 
-## 🎨 UI/UX Features
+## UI/UX Features
 
 - **Responsive Design:** Mobile-first approach with bottom navigation for mobile
 - **Consistent Theme:** Dark/Light mode support with custom color variables
@@ -216,7 +216,7 @@ All forms use Zod for real-time validation:
 - **Animations:** Smooth transitions with Framer Motion
 - **Toast Notifications:** Success, error, and info messages with Sonner
 
-## 🔐 Authentication & Authorization
+## Authentication & Authorization
 
 - **Password Security:** SHA-256 hashing with CryptoJS for secure password storage
 - **Role-based Access Control:** Tourist vs Agent with different permissions
@@ -225,7 +225,7 @@ All forms use Zod for real-time validation:
 - **Demo Mode:** Accepts any credentials for development/testing purposes
 - **Token Generation:** Secure random token generation for future API integration
 
-## 📱 Mobile Optimization
+## Mobile Optimization
 
 - Bottom navigation for easy thumb access
 - Reduced padding (px-1 to px-2) for maximum screen usage
@@ -233,14 +233,14 @@ All forms use Zod for real-time validation:
 - Optimized forms for mobile input
 - Responsive images and cards
 
-## 🔄 State Management
+## State Management
 
 - **Auth Store:** User authentication and session
 - **Destination Store:** Destinations and packages with CRUD operations
 - **Booking Store:** Tourist bookings with status management
 - **Review Store:** Package reviews with rating calculation
 
-## 📊 Key Pages
+## Key Pages
 
 - **Landing Page:** Hero, featured packages, about section, newsletter
 - **Packages:** Browse all packages with search and filters
@@ -254,7 +254,7 @@ All forms use Zod for real-time validation:
 - **Profile:** User settings and preferences
 - **About/Contact/Help:** Informational pages
 
-## 🐛 Error Handling
+## Error Handling
 
 - **Error Boundary:** Catches React errors and displays friendly UI
 - **404 Page:** Custom not found page with navigation options
@@ -262,7 +262,7 @@ All forms use Zod for real-time validation:
 - **API Errors:** Interceptor handles common HTTP errors
 - **Loading States:** Prevents interaction during async operations
 
-## 🌐 API Integration (Ready)
+## API Integration (Ready)
 
 Services layer prepared for backend integration:
 
@@ -348,7 +348,7 @@ GET /api/destinations/:id
 - Response: { id, name, description, photoUrl, packages }
 ```
 
-## 📦 Deployment
+## Deployment
 
 ### Frontend (Vercel)
 
@@ -387,7 +387,7 @@ SECRET_KEY=your-secret-key-here
 CORS_ORIGIN=https://your-frontend.vercel.app
 ```
 
-## 🤝 Contributing
+## Contributing
 
 This is a university project (UAS - Pengembangan Aplikasi Web). Team contributions only.
 
@@ -398,7 +398,7 @@ This is a university project (UAS - Pengembangan Aplikasi Web). Team contributio
 - Commit messages: `[Feature] Description` or `[Fix] Description`
 - Minimum 30 commits from various team members
 
-## 📸 Screenshots
+## Screenshots
 
 ### Landing Page
 
@@ -426,17 +426,17 @@ This is a university project (UAS - Pengembangan Aplikasi Web). Team contributio
 
 _Note: Screenshots will be added after final deployment_
 
-## 👨‍💻 Team Members
+## Team Members
 
 **Kelompok [Nomor] - Travel Package Booking System (Digit 9)**
 
-| No | Nama Lengkap              | NIM       | Role                 | Kontribusi Utama                                                                                           |
-| -- | ------------------------- | --------- | -------------------- | ---------------------------------------------------------------------------------------------------------- |
-| 1  | Martino Kelvin            | 123140165 | Team Leader & FE Dev | Project coordination,Pages implementation, frontend-backend integration, documentation, video presentation |
-| 2  | Muhammad Yusuf            | 122140193 | Frontend Developer   | Pages implementation, forms & validation, routing, error handling                                          |
-| 3  | Reyhan Capri Moraga       | 123140022 | Backend Developer    | API endpoints, booking, payment and qris                                                                   |
-| 4  | Daniel Calvin Simanjuntak | 123140004 | Backend Developer    | API endpoints, destination , and packages.                                                                 |
-| 5  | Faiq Ghozy Erlangga       | 123140139 | Backend Dev & DevOps | API endpoints, authentication, security, password hashing,review, and deployment                          |
+| No  | Nama Lengkap              | NIM       | Role                 | Kontribusi Utama                                                                                           |
+| --- | ------------------------- | --------- | -------------------- | ---------------------------------------------------------------------------------------------------------- |
+| 1   | Martino Kelvin            | 123140165 | Team Leader & FE Dev | Project coordination,Pages implementation, frontend-backend integration, documentation, video presentation |
+| 2   | Muhammad Yusuf            | 122140193 | Frontend Developer   | Pages implementation, forms & validation, routing, error handling                                          |
+| 3   | Reyhan Capri Moraga       | 123140022 | Backend Developer    | API endpoints, booking, payment and qris                                                                   |
+| 4   | Daniel Calvin Simanjuntak | 123140004 | Backend Developer    | API endpoints, destination , and packages.                                                                 |
+| 5   | Faiq Ghozy Erlangga       | 123140139 | Backend Dev & DevOps | API endpoints, authentication, security, password hashing,review, and deployment                           |
 
 ### Pembagian Tugas Detail
 
@@ -446,11 +446,11 @@ _Note: Screenshots will be added after final deployment_
 - **Deployment & Integration:** Member 1
 - **Documentation & Video:** Member 1, 2
 
-## 📄 License
+## License
 
 This project is for educational purposes as part of IF25-22014 course at Institut Teknologi Sumatera.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - **Shadcn UI** for beautiful, accessible components
 - **Radix UI** for accessible primitives
@@ -459,7 +459,7 @@ This project is for educational purposes as part of IF25-22014 course at Institu
 - **React Community** for excellent documentation and resources
 - **Dosen Pengampu:** M Habib Algifari, S.Kom., M.T.I.
 
-## 📹 Video Presentation
+## Video Presentation
 
 **Duration:** 10 minutes maximum
 
@@ -478,7 +478,7 @@ This project is for educational purposes as part of IF25-22014 course at Institu
 
 ---
 
-## 📊 Project Status
+## Project Status
 
 ### Completion Checklist
 
@@ -532,29 +532,28 @@ This project is for educational purposes as part of IF25-22014 course at Institu
 **Screenshot Application**
 
 - Landing Page Home
-![1766050043624](image/README/1766050043624.png)
-![1766050061530](image/README/1766050061530.png)
-![1766050074947](image/README/1766050074947.png)
+  ![1766050043624](image/README/1766050043624.png)
+  ![1766050061530](image/README/1766050061530.png)
+  ![1766050074947](image/README/1766050074947.png)
 
 - Destination Page
-![1766050102517](image/README/1766050102517.png)
+  ![1766050102517](image/README/1766050102517.png)
 - Packages page
-![1766050120295](image/README/1766050120295.png)
+  ![1766050120295](image/README/1766050120295.png)
 - Review Package
-![1766050258464](image/README/1766050258464.png)
+  ![1766050258464](image/README/1766050258464.png)
 - Booking
-![1766050270261](image/README/1766050270261.png)
+  ![1766050270261](image/README/1766050270261.png)
 - Payment Integration
-![1766050305254](image/README/1766050305254.png)
+  ![1766050305254](image/README/1766050305254.png)
 - Dashboard Agent - CRUD and Manage 'Packages and Destinations'
-![1766050192619](image/README/1766050192619.png)
+  ![1766050192619](image/README/1766050192619.png)
 - Dashboard Agent - payment verification - analytics
-![1766050423934](image/README/1766050423934.png)
+  ![1766050423934](image/README/1766050423934.png)
 
 - Video Presentation (done)
 
 - Link deployment (frontend dan backend)
-
 
 ---
 

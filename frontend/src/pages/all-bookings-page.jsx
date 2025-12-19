@@ -9,13 +9,13 @@ import {
   Clock,
   CheckCircle2,
   XCircle,
-  AlertCircle,
   ArrowLeft,
   Star,
   Phone,
   Loader2,
   Upload,
   FileCheck,
+  AlertCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -26,6 +26,7 @@ import MainLayout from "@/layout/main-layout";
 import { useAuthStore } from "@/store/auth-store";
 import { ReviewForm } from "@/components/review-form";
 import { useSEO } from "@/hooks/use-seo";
+import { getStatusIcon, getStatusColor } from "@/lib/booking-utils";
 import * as bookingService from "@/services/booking.service";
 import * as packageService from "@/services/package.service";
 import * as destinationService from "@/services/destination.service";
@@ -81,30 +82,10 @@ export default function AllBookingsPage() {
     fetchData();
   }, [isAuthenticated, user, navigate]);
 
-  const getStatusIcon = (status) => {
-    switch (status) {
-      case "confirmed":
-        return <CheckCircle2 className="h-4 w-4" />;
-      case "completed":
-        return <CheckCircle2 className="h-4 w-4" />;
-      case "cancelled":
-        return <XCircle className="h-4 w-4" />;
-      default:
-        return <AlertCircle className="h-4 w-4" />;
-    }
-  };
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "confirmed":
-        return "bg-green-500/10 text-green-700 dark:text-green-400";
-      case "completed":
-        return "bg-blue-500/10 text-blue-700 dark:text-blue-400";
-      case "cancelled":
-        return "bg-destructive/10 text-destructive";
-      default:
-        return "bg-yellow-500/10 text-yellow-700 dark:text-yellow-400";
-    }
+  // Status icon/color now imported from @/lib/booking-utils
+  const renderStatusIcon = (status) => {
+    const Icon = getStatusIcon(status);
+    return <Icon className="h-4 w-4" />;
   };
 
   const handleWriteReview = (bookingId, packageId, packageName) => {
@@ -287,7 +268,7 @@ export default function AllBookingsPage() {
                                   <Badge
                                     className={`${getStatusColor(booking.status)} flex items-center gap-1`}
                                   >
-                                    {getStatusIcon(booking.status)}
+                                    {renderStatusIcon(booking.status)}
                                     {booking.status}
                                   </Badge>
                                 </div>
